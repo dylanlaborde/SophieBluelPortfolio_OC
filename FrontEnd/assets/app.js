@@ -1,12 +1,11 @@
 let workData = null;
 
-async function GetWork() {
+async function getWork() {
     if (!workData) {
         try {
             const url = "http://localhost:5678/api/works";
             const reponse = await fetch(url);
             workData = await reponse.json();
-            return workData;
         } catch (error) {
             console.error('Fetch error:', error);
             return [];
@@ -15,7 +14,7 @@ async function GetWork() {
     return workData;
 }
 
-async function GetCategories() {
+async function getCategories() {
     try {
         const url = "http://localhost:5678/api/categories";
         const response = await fetch(url);
@@ -30,7 +29,7 @@ async function GetCategories() {
     }
 }
 async function displayCategories() {
-    const data = await GetCategories();
+    const data = await getCategories();
     data.unshift({ id: 0, name: 'Tous' })
     const filtre = document.querySelectorAll('.filtre');
     data.forEach(element => {
@@ -57,16 +56,10 @@ async function filterData(fltrId) {
     }
 }
 async function displayData(filtered) {
-    if (!workData) {
-        var works = await GetWork();
-    } if (workData && filterData) {
-        var works = filtered;
-    } if (workData && !filtered) {
-        var works = workData;
-    }
+    const works = filtered || await getWork();
+    const gallery = document.querySelector('.gallery');
     document.querySelector('.gallery').innerHTML = "";
     works.forEach((element, i) => {
-        const gallery = document.querySelector('.gallery');
         const figure = document.createElement('Figure');
         const content = `<img src="${element.imageUrl}" alt="${element.title}">
                          <figcaption>${element.title}</figcaption>`;
