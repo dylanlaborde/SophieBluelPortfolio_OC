@@ -31,6 +31,8 @@ loginForm.addEventListener('submit',(e)=>{
     .then(data => {
         //redirect and token storage here soon
         console.log('Success:', data);
+        localStorage.setItem("TOKEN", data.token);
+        window.location.href = '../index.html';
     })
         .catch(error => {
              console.error('Error:', error.message);
