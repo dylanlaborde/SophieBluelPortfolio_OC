@@ -1,5 +1,4 @@
 let workData = null;
-
 async function getWork() {
     if (!workData) {
         try {
@@ -68,8 +67,56 @@ async function displayData(filtered) {
     });
 }
 
-(function init() {
-    displayCategories();
-    displayData();
-})();
+function isConnected() {
+    var connected = localStorage.getItem('TOKEN');
+    if (connected) {
+        displayEditMode();
+        switchlog();
+    } else {
+        displayCategories();
+    }
+}
 
+function displayEditMode() {
+    //bare de mode edition en haut de page
+    const editBar = document.createElement('div');
+    editBar.classList.add('editContainer');
+    const editContent = `
+                        <div class="edit">
+                            <i class="fa-regular fa-pen-to-square"></i>
+                            <span>Mode Edition</span>
+                        </div>
+                        `
+    editBar.innerHTML = editContent;
+    document.body.prepend(editBar);
+    //bouton modifier
+    const titlewrapper = document.querySelector('.title-wrapper');
+    const div = document.createElement('div');
+    const titlewrapperContent = `<a href="#modale"><i class="fa-regular fa-pen-to-square"></i><span>Modifier</span></a>`;
+    div.innerHTML = titlewrapperContent;
+    titlewrapper.classList.add('title-wrapper--edit')
+    titlewrapper.append(div);
+    //cacher filtre   
+    const filtre = document.querySelectorAll('.filtre');
+    filtre[0].remove();
+   
+}
+
+function switchlog() {
+    const logInOut = document.querySelector('.logInOut');
+    const logout = '<a href="#logout" class="logout">logout</a>'
+    logInOut.innerHTML = logout;
+    logInOut.addEventListener('click', (e) => {
+        localStorage.removeItem('TOKEN');
+        window.location.href = 'index.html';
+    })
+}
+
+function init() {
+    isConnected();
+    displayData();
+};
+
+window.onload = (event) => {
+    init()
+};
