@@ -10,6 +10,7 @@ async function getWork() {
             return [];
         }
     }
+    
     return workData;
 }
 
@@ -65,6 +66,7 @@ async function displayData(filtered) {
         figure.innerHTML = content;
         gallery.appendChild(figure);
     });
+    setModaleContent(works);
 }
 
 function isConnected() {
@@ -72,6 +74,7 @@ function isConnected() {
     if (connected) {
         displayEditMode();
         switchlog();
+        displayModale();
     } else {
         displayCategories();
     }
@@ -92,7 +95,7 @@ function displayEditMode() {
     //bouton modifier
     const titlewrapper = document.querySelector('.title-wrapper');
     const div = document.createElement('div');
-    const titlewrapperContent = `<a href="#modale"><i class="fa-regular fa-pen-to-square"></i><span>Modifier</span></a>`;
+    const titlewrapperContent = `<a id="opendModale" href="#modale"><i class="fa-regular fa-pen-to-square"></i><span>Modifier</span></a>`;
     div.innerHTML = titlewrapperContent;
     titlewrapper.classList.add('title-wrapper--edit')
     titlewrapper.append(div);
@@ -110,6 +113,48 @@ function switchlog() {
         localStorage.removeItem('TOKEN');
         window.location.href = 'index.html';
     })
+}
+
+function displayModale() {
+    const modale = document.querySelector('#modale');
+    const editBtn = document.querySelector('#opendModale');
+    const modaleBody = document.querySelector('.modale__body');
+    editBtn.onclick = (e) => {
+        console.log('open modale ');
+        modale.style.display = "block";
+    }
+    closeModal();
+}
+
+function closeModal() {
+    const btnClose = document.querySelector('.modale__close');
+    btnClose.addEventListener('click', () => {
+        modale.style.display = "none";
+    })
+    window.addEventListener("click", (e) => {
+        if (e.target === document.querySelector('aside')) {
+            modale.style.display = "none";
+        };
+    })
+}
+
+function setModaleContent(data) {
+    console.log('modale data charger');
+    const modaleBody = document.querySelectorAll('.modale__body');
+    data.forEach((element, i) => {
+        let article = document.createElement('article');
+        article.classList.add('modale__article');
+        let articleContent = `
+        <img id="${element.id}" src="${element.imageUrl}" alt="${element.title}">
+        <div class="article__delete__wrapper">
+            <div class="article__delete">
+                <i class="fa-solid fa-trash-can fa-2xs"></i>
+            </div>	
+        </div>`
+        article.innerHTML = articleContent;
+        modaleBody[0].append(article);
+    })
+
 }
 
 function init() {

@@ -329,3 +329,126 @@ main {
 	justify-content: center;
 	padding: 10px;
 }
+
+/*Modale*/
+
+.modale__close{
+	position: absolute;
+	top: 32px;
+	right: 30px;
+	cursor: pointer;
+}
+
+.modale{
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background:#0000004D;
+}
+
+
+
+.modale__wrapper{
+	border: solid 1px black;
+	background-color: white;
+	border-radius: 10px;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	max-width: 630px;
+	width:100%;
+	
+}
+
+.modale__title{
+	display: flex;
+	justify-content: center;
+	padding-top: 60px;
+	font-size: 26px;
+	font-weight: 400;
+	color: black;
+	padding-bottom: 36px;
+}
+
+.modale__body{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	
+	column-gap: 10px;
+	row-gap: 29px;
+	padding-left: 105px;
+	padding-right: 105px;
+	padding-top: 10px;
+	padding-bottom: 67px;
+}
+
+.modale__footer{
+	display: flex;
+	justify-content: center;
+	padding-left: 105px;
+	padding-right: 105px;
+	padding-bottom: 55px;
+	padding-top: 32px;
+}
+
+.modale__btn{
+	color: white;
+	cursor: pointer;
+	background-color: #1D6154;
+	border-radius: 60px;
+	width: 237px;
+	height: 36px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 14px;
+}
+
+.modale__btn:hover{
+	background-color: #1d6154bf;
+}
+
+.modale__article{
+	height: 102px;
+	width: 76px;
+}
+
+.modale__article img{
+	width: 100%;
+}
+
+.modale__line{
+	max-width: 420px;
+}
+
+.article__delete__wrapper{
+	align-items: center;
+	bottom: 100px;
+	display: flex;
+	height: 17px;
+	justify-content: center;
+	left: 55px;
+	position: relative;
+	width: 17px;
+}
+
+.article__delete{
+	border-radius: 2px;
+	background-color: black;
+	cursor: pointer;
+	width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.article__delete i{
+	color: white
+}
