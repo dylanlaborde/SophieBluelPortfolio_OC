@@ -1,22 +1,21 @@
 let workData = null;
 let categoriesData = null;
 
-export const getWork = async()=> {
-    if (!workData) {
-        try {
-            const url = "http://localhost:5678/api/works";
-            const reponse = await fetch(url);
-            workData = await reponse.json();
-        } catch (error) {
-            console.error('Fetch error:', error);
-            return [];
-        }
+export const getWork = async () => {
+    if (workData) {
+        return workData;
     }
-    
-    return workData;
+    try {
+        const url = "http://localhost:5678/api/works";
+        const reponse = await fetch(url);
+        return workData = await reponse.json();
+    } catch (error) {
+        console.error('Fetch error:', error);
+        return [];
+    }
 }
 
-export const getCategories = async ()=> {
+export const getCategories = async () => {
     try {
         const url = "http://localhost:5678/api/categories";
         const response = await fetch(url);
@@ -39,5 +38,9 @@ export const isConnected = () =>{
         return true
     }
 }
+
+export const resetWorkdata = () => {
+    workData = null;
+};
 
 export { workData, categoriesData };

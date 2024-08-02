@@ -1,4 +1,5 @@
-import { isConnected } from './data.js';
+import { isConnected , workData , getWork , resetWorkdata} from './data.js';
+import { displayData } from './app.js';
 
 const initModal = () => {
     if (isConnected()) {
@@ -10,9 +11,12 @@ const displayModale = () => {
     const modale = document.querySelector('#modale');
     const editBtn = document.querySelector('#opendModale');
     const modaleBody = document.querySelector('.modale__body');
+    const containsArticles = modaleBody.querySelectorAll('.modale__article').length > 0;
+    if(containsArticles){modaleBody.innerHTML = ''}
     editBtn.onclick = (e) => {
         console.log('open modale ');
         modale.style.display = "block";
+        deleteListenner();
     }
     closeModal();
 }
@@ -37,7 +41,7 @@ export function setModaleContent(data) {
         let articleContent = `
         <img id="${element.id}" src="${element.imageUrl}" alt="${element.title}">
         <div class="article__delete__wrapper">
-            <div class="article__delete">
+            <div id="${element.id}" class="article__delete">
                 <i class="fa-solid fa-trash-can fa-2xs"></i>
             </div>	
         </div>`
@@ -46,5 +50,33 @@ export function setModaleContent(data) {
     })
 
 }
+
+const deleteListenner = () => {
+    const deleteBtns = document.querySelectorAll('.article__delete');
+    const authToken = localStorage.getItem('TOKEN');
+    deleteBtns.forEach((btn,i) => {
+        btn.addEventListener('click', async(e) => {
+            e.preventDefault();
+            const articleId = e.target.closest('.article__delete').id;
+            const options = {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authToken}`,
+                }
+            }
+            let response = await fetch(`http://localhost:5678/api/works/${articleId}`, options)
+            if (response.ok) {
+                //on reset le cache pour refaire une requete 
+                await resetWorkdata();
+                let updateData = await getWork();
+                displayModale();
+                displayData(updateData);
+                deleteListenner();
+            }
+        });
+    })
+}
+
 
 export default initModal;

@@ -33,7 +33,7 @@ const filterData = async (fltrId) => {
         displayData(result);
     }
 }
-const displayData = async (filtered) => {    
+export const displayData = async (filtered) => {    
     let data = filtered || await getWork();
     const gallery = document.querySelector('.gallery');
     document.querySelector('.gallery').innerHTML = "";
@@ -92,3 +92,4 @@ const switchlog = () => {
 }
 
 export default init;
+
