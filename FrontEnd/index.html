@@ -14,17 +14,45 @@
 </head>
 <body>
 	<aside id="modale" class="modale">
+
 		<div class="modale__wrapper">
-			<div class="modale__close"><i class="fa-solid fa-xmark"></i></div>
 			<div class="modale__header">
-				<h3 class="modale__title">Galerie Photo</h3>
+				<div class="modale__close"><i class="fa-solid fa-xmark"></i></div>
+				<div class="modale__previous"><i class="fa-solid fa-arrow-left"></i></div>
+				<h3 class="modale__title"></h3>
 			</div>
-			<div class="modale__body">
+			<div class="modale__container" id="modale__container--project">
+				<div class="modale__body"></div>
+				<hr class="modale__line">
+				<div class="modale__footer">
+					<div class="modale__btn">Ajouté Photo</div>
+				</div>
 			</div>
-			<hr class="modale__line">
-			<div class="modale__footer">
-				<div class="modale__btn">
-					Ajouter une photo 
+			<div class="modale__container" id="modale__container--upload">
+				<div class="modale__body">
+					<form id="modalForm" action="#" method="post">
+						<div class="modale__upload__wrapper">
+							<div class="modale__upload__img">
+								<i class="fa-regular fa-image fa-2xl"></i>
+							</div>
+							<label id="file__btn" for="file__upload"><i class="fa-solid fa-plus"></i>Ajouter
+								photo</label>
+							<input name="file__upload" id="file__upload" type="file" required>
+						</div>
+						<label for="title">Titre</label>
+						<input type="text" name="title" id="title" required>
+						<label for="categorie__selected">Catégorie</label>
+						<select id="categorie__selected" required>
+							<option value=""></option>
+							<option value="1">Objets</option>
+							<option value="2">Appartement</option>
+							<option value="3">Hotels & Restaurants</option>
+						</select>
+					</form>
+				</div>
+				<hr class="modale__line">
+				<div class="modale__footer">
+					<input class="modale__submitBtn" id="" type="submit" value="valider">
 				</div>
 			</div>
 		</div>
