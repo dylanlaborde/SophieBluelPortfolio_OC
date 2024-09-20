@@ -1,13 +1,15 @@
-import { isConnected, workData, getWork, resetWorkdata } from './data.js';
+import { isConnected, workData, getWork, resetWorkdata ,getCategories} from './data.js';
 import { displayData } from './app.js';
 
 const modal1 = document.querySelector('#modale__container--project')
 const modal2 = document.querySelector('#modale__container--upload')
+const modale = document.querySelector('#modale');
 const precedent = document.querySelector('.modale__previous');
 const title = document.querySelector('.modale__title');
 const modaleBody = document.querySelector('.modale__body');
 const submitBtn = document.querySelector('.modale__submitBtn');
 const modalBtn = document.querySelector('.modale__btn');
+let categorySelect = document.getElementById('categorie__selected');
 let validateHandle = false;
 
 const initModal = () => {
@@ -20,12 +22,18 @@ const modaleListenner = () => {
     switchModal();
     handleForm()
     closeModal();
-    modalBtn.addEventListener('click', () => {
-        switchModal()
-    })
+    
 }
+
+modalBtn.addEventListener('click', () => {
+    switchModal();
+    if (categorySelect.options.length == 0) {
+        selectedCategorie();
+    }
+
+})
+
 const displayModale = () => {
-    const modale = document.querySelector('#modale');
     const editBtn = document.querySelector('#opendModale');
     const containsArticles = modaleBody.querySelectorAll('.modale__article').length > 0;
     if (containsArticles) { modaleBody.innerHTML = '' }
@@ -74,14 +82,19 @@ const handleDelete = async (id) => {
             'Authorization': `Bearer ${authToken}`,
         }
     }
-    let response = await fetch(`http://localhost:5678/api/works/${id}`, options)
-    if (response.ok) {
-        //on reset le cache pour refaire une requete 
-        await resetWorkdata();
-        let updateData = await getWork();
-        resetModal();
-        displayData(updateData);
+    try {
+        let response = await fetch(`http://localhost:5678/api/works/${id}`, options)
+        if (response.ok) {
+            //on reset le cache pour refaire une requete 
+            resetWorkdata();
+            let updateData = await getWork();
+            resetModal();
+            displayData(updateData);
+        }
+    } catch (error) {
+        console.error(error);
     }
+    modale.style.display = "none";
 }
 const resetModal = () => {
     const modalContent = document.querySelector('#modale__container--project .modale__body');
@@ -96,6 +109,7 @@ const switchModal = (reset) => {
         title.innerHTML = "Ajouté Photo"
         modal1.style.display = "none"
         modal2.style.display = "block"
+        
     }
     precedent.removeEventListener('click', backModal);
     precedent.addEventListener('click', backModal);
@@ -112,10 +126,27 @@ const backModal = () => {
     modal2.style.display = "none"
     precedent.style.display = "none"
 }
+
+const selectedCategorie = async () => {
+    if (categorySelect.options.length > 0) return;
+    
+    let categoriesData = await getCategories();
+    const optionDefault = document.createElement('option');
+    categorySelect.appendChild(optionDefault);
+
+    categoriesData.forEach((ctg) => {
+        const option = document.createElement('option');
+        option.value = ctg.id
+        option.innerText = ctg.name
+        categorySelect.appendChild(option)
+
+    })
+
+}
+
 const handleForm = () => {
     const modalForm = document.querySelector('#modalForm');
     let titleInput = document.getElementById('title');
-    let categorySelect = document.getElementById('categorie__selected');
     let outpout;
     const uploadInput = document.querySelector('#file__upload');
     const imgUploaded = document.querySelector('.modale__upload__image')
@@ -191,7 +222,7 @@ const handleSubmitForm = async (dataToFetch) => {
         if (response.ok) {
             console.log('status : ', response.status)
             console.log('data :',data)
-            await resetWorkdata();
+            resetWorkdata();
             const updateData = await getWork();
             displayData(updateData);
         }
